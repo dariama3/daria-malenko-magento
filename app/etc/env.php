@@ -16,10 +16,10 @@ return [
         'table_prefix' => '',
         'connection' => [
             'default' => [
-                'host' => '127.0.0.1:3357',
-                'dbname' => 'dm_magento',
-                'username' => 'dm_user',
-                'password' => 'dm_password',
+                'host' => 'mysql',
+                'dbname' => 'daria_malenko_magento_local',
+                'username' => 'daria_malenko_magento_local',
+                'password' => 'daria_malenko_magento_local',
                 'model' => 'mysql4',
                 'engine' => 'innodb',
                 'initStatements' => 'SET NAMES utf8;',
@@ -36,7 +36,7 @@ return [
         ]
     ],
     'x-frame-options' => 'SAMEORIGIN',
-    'MAGE_MODE' => 'default',
+    'MAGE_MODE' => 'developer',
     'session' => [
         'save' => 'files'
     ],

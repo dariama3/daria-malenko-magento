@@ -124,8 +124,8 @@
 
     SetEnvIf Host .*daria-malenko-magento.local.* MAGE_RUN_CODE=default
     SetEnvIf Host .*daria-malenko-magento.local.* MAGE_RUN_TYPE=store
-    SetEnvIf Host .*daria-malenko-magento.ua.* MAGE_RUN_CODE=ua_store_view
-    SetEnvIf Host .*daria-malenko-magento.ua.* MAGE_RUN_TYPE=store
+    SetEnvIf Host .*daria-malenko-magento.us.* MAGE_RUN_CODE=us_store_view
+    SetEnvIf Host .*daria-malenko-magento.us.* MAGE_RUN_TYPE=store
 
 ############################################
 ## You can put here your magento root folder

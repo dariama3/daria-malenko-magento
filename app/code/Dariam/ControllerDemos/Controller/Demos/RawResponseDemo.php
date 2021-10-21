@@ -29,11 +29,11 @@ class RawResponseDemo implements
         return $result->setHeader('Content-Type', 'text/html')
             ->setContents(<<<HTML
 <ul>
-    <li><a href="https://daria-malenko-magento.local/dariam-controller-demos/demos/redirectresponsedemo">RedirectResponseDemo</a></li>
-    <li><a href="https://daria-malenko-magento.local/dariam-controller-demos/demos/jsonresponsedemo">JsonResponseDemo</a></li>
-    <li><a href="https://daria-malenko-magento.local/dariam-controller-demos/demos/forwardresponsedemo">ForwardResponseDemo</a></li>
+    <li><a href="/dariam-controller-demos/demos/redirectresponsedemo" target="_blank">RedirectResponseDemo</a></li>
+    <li><a href="/dariam-controller-demos/demos/jsonresponsedemo">JsonResponseDemo</a></li>
+    <li><a href="/dariam-controller-demos/demos/forwardresponsedemo">ForwardResponseDemo</a></li>
 </ul>
-<form method="GET" action="https://daria-malenko-magento.local/dariam-controller-demos/demos/jsonresponsedemo">
+<form method="GET" action="/dariam-controller-demos/demos/jsonresponsedemo">
     <label>
         Vendor
         <input type="text" name="vendor" value="Dariam">

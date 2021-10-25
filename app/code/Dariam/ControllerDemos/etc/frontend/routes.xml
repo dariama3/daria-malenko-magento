@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd"
+>
+    <router id="standard">
+        <route id="dariam_controllerdemos" frontName="dariam-controller-demos">
+            <module name="Dariam_ControllerDemos"/>
+        </route>
+    </router>
+</config>

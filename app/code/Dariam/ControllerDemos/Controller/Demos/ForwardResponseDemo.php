@@ -26,6 +26,6 @@ class ForwardResponseDemo implements
     {
         $result = $this->forwardFactory->create();
 
-        return $result->forward('jsonresponsedemo');
+        return $result->forward('formresponsedemo');
     }
 }

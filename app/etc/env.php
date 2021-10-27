@@ -36,7 +36,7 @@ return [
         ]
     ],
     'x-frame-options' => 'SAMEORIGIN',
-    'MAGE_MODE' => 'production',
+    'MAGE_MODE' => 'developer',
     'session' => [
         'save' => 'files'
     ],
@@ -62,7 +62,7 @@ return [
     ],
     'cache_types' => [
         'config' => 1,
-        'layout' => 1,
+        'layout' => 0,
         'block_html' => 0,
         'collections' => 1,
         'reflection' => 1,

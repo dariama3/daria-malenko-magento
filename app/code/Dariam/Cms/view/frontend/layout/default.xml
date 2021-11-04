@@ -10,5 +10,12 @@
                 </arguments>
             </block>
         </referenceContainer>
+        <referenceContainer name="dariam.sidebar.profile">
+            <block class="Magento\Cms\Block\BlockByIdentifier" name="dariam.creator.profile">
+                <arguments>
+                    <argument name="identifier" xsi:type="string">creator_profile</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
     </body>
 </page>

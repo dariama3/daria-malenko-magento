@@ -20,6 +20,8 @@ class ForwardResponseDemo implements
     }
 
     /**
+     * Forwards to JsonResponseDemo controller.
+     *
      * @return Forward
      */
     public function execute(): Forward

@@ -20,6 +20,8 @@ class RedirectResponseDemo implements
     }
 
     /**
+     * Redirects to github repository.
+     *
      * @return Redirect
      */
     public function execute(): Redirect

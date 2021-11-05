@@ -18,6 +18,8 @@ class FormResponseDemo implements \Magento\Framework\App\Action\HttpGetActionInt
     }
 
     /**
+     * Render form response demo page.
+     *
      * @return Page
      */
     public function execute(): Page

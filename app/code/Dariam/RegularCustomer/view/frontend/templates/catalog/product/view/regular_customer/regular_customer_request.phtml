@@ -45,17 +45,17 @@
         </fieldset>
         <div class="actions-toolbar">
             <div class="primary">
-                <?php if ($product = $block->getData('product')) : ?>
+                <?php if ($product = $block->getData('product')): ?>
                     <input type="hidden"
                            name="product_id"
                            value="<?= $escaper->escapeHtmlAttr((int) $product->getId()) ?>"
                     />
                 <?php endif; ?>
                 <button type="submit"
-                        title="<?= $escaper->escapeHtmlAttr(__('Send Request')) ?>"
+                        title="<?= $escaper->escapeHtmlAttr(__('Send request')) ?>"
                         class="action submit primary"
                 >
-                    <span><?= $escaper->escapeHtml(__('Send Request')) ?></span>
+                    <span><?= $escaper->escapeHtml(__('Send request')) ?></span>
                 </button>
             </div>
         </div>

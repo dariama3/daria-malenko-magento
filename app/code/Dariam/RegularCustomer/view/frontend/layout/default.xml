@@ -6,7 +6,7 @@
             <block class="Magento\Framework\View\Element\Html\Link" name="regular-customer-form-link">
                 <arguments>
                     <argument name="label" xsi:type="string" translate="true">Loyalty program</argument>
-                    <argument name="path" xsi:type="string">regular_customer/request/form</argument>
+                    <argument name="path" xsi:type="string">regular-customer/request/form</argument>
                 </arguments>
             </block>
         </referenceBlock>

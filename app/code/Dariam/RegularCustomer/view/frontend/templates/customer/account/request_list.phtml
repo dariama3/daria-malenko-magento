@@ -1,0 +1,31 @@
+<?php
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+/** @var \Dariam\RegularCustomer\ViewModel\Customer\RequestList $viewModel */
+$viewModel = $block->getData('view_model');
+?>
+<ul>
+    <?php /** @var \Dariam\RegularCustomer\Model\RegularCustomerRequest $regularCustomerRequest */ ?>
+    <?php foreach ($viewModel->getRegularCustomerRequestCollection() as $regularCustomerRequest): ?>
+        <?php $product = $viewModel->getProduct((int) $regularCustomerRequest->getProductId()); ?>
+        <li>
+            <?php if ($product): ?>
+                <span><?= $escaper->escapeHtml(__('Requested product:')) ?></span>
+                <a href="<?= $escaper->escapeHtmlAttr($product->getProductUrl()) ?>">
+                    <?= $escaper->escapeHtml($product->getName()) ?>
+                </a>
+            <?php else: ?>
+                <?php
+                /**
+                 * 1. Here we use concat because only the phrase 'Requested product:' is translated
+                 * 2. $regularCustomerRequest->getProductName() - to be implemented in the future
+                 */
+                ?>
+                <span><?= $escaper->escapeHtml(__('Requested product:') . ' n/a'/*$regularCustomerRequest->getProductName()*/) ?></span>
+            <?php endif; ?>
+        </li>
+    <?php endforeach; ?>
+</ul>

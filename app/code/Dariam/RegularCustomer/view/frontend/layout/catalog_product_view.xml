@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd"
+>
+    <body>
+        <referenceContainer name="product.info.main">
+            <block class="Dariam\RegularCustomer\Block\Product\View\RegularCustomerRequest"
+                   name="dariam.regular.customer.request"
+                   template="Dariam_RegularCustomer::catalog/product/view/regular_customer/regular_customer_request.phtml"
+                   before="product.info.details"
+            >
+                <arguments>
+                    <argument name="cache_lifetime" xsi:type="number">84600</argument>
+                    <argument name="request_submit_url"
+                              path="regular-customer/index/request"
+                              xsi:type="url"
+                    />
+                    <argument name="product"
+                              helper="Magento\Catalog\Helper\Data::getProduct"
+                              xsi:type="helper"
+                    />
+                </arguments>
+                <block class="Magento\Cms\Block\Block" name="dariam.regular.customer.message">
+                    <arguments>
+                        <argument name="block_id" xsi:type="string">regular_customer_request_message</argument>
+                    </arguments>
+                </block>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

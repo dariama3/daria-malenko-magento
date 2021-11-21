@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd"
+>
+    <body>
+        <move element="dariam.regular.customer.request" destination="dariam-regular-customer-tab"/>
+
+        <referenceBlock name="product.info.details">
+            <block class="Magento\Framework\View\Element\Text\ListText"
+                   name="dariam-regular-customer-tab"
+                   group="detailed_info"
+            >
+                <arguments>
+                    <argument name="sort_order" xsi:type="string">40</argument>
+                    <argument translate="true" name="title" xsi:type="string">Loyalty program</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

@@ -347,6 +347,7 @@ return [
         'Dariam_Catalog' => 1,
         'Dariam_Cms' => 1,
         'Dariam_ControllerDemos' => 1,
+        'Dariam_RegularCustomer' => 1,
         'Dotdigitalgroup_Email' => 1,
         'Dotdigitalgroup_Chat' => 1,
         'Dotdigitalgroup_ChatGraphQl' => 1,

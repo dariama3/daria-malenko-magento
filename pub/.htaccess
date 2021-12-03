@@ -122,6 +122,13 @@
     Options +FollowSymLinks
     RewriteEngine on
 
+    # Development
+    SetEnvIf Host .*daria-malenko-magento-local.allbugs.info.* MAGE_RUN_CODE=default
+    SetEnvIf Host .*daria-malenko-magento-local.allbugs.info.* MAGE_RUN_TYPE=store
+    SetEnvIf Host .*daria-malenko-magento-us.allbugs.info.* MAGE_RUN_CODE=us_store_view
+    SetEnvIf Host .*daria-malenko-magento-us.allbugs.info.* MAGE_RUN_TYPE=store
+
+    # Production
     SetEnvIf Host .*daria-malenko-magento.local.* MAGE_RUN_CODE=default
     SetEnvIf Host .*daria-malenko-magento.local.* MAGE_RUN_TYPE=store
     SetEnvIf Host .*daria-malenko-magento.us.* MAGE_RUN_CODE=us_store_view

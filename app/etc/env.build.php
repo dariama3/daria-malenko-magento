@@ -98,6 +98,6 @@ return [
                     'elasticsearch7_index_prefix' => 'build'
                 ]
             ]
-        ],
+        ]
     ]
 ];

@@ -1,46 +1,9 @@
 @color-light-red: #ffcccb;
 
-@navigation__background: @color-sky-blue1;
-@footer__background-color: @color-sky-blue1;
-
-@header-panel__background-color: @color-blue3;
-@copyright__background-color: @color-blue3;
-
-@tab-control__background-color: @color-blue3;
-@tab-control__color: @color-white;
-@tab-control__active__background-color: @color-sky-blue1;
-@tab-control__hover__background-color: @color-sky-blue1;
-@tab-content__background-color: @color-white;
-
-@accordion-control__background-color: @color-blue3;
-@accordion-control__color: @color-white;
-@accordion-control__hover__background-color: @color-sky-blue1;
-@accordion-control__active__background-color: @color-sky-blue1;
-@accordion-content__background-color: @color-white;
-
-.data.switch .counter {
-    .lib-css(color, @accordion-control__color);
-}
+@import "extend/_header";
+@import "extend/_footer";
+@import "extend/_messages";
+@import "extend/_product-tabs";
 
 @link__color: @color-orange-red1;
 @link__visited__color: @color-orange-red1;
-
-@message-success__color: @color-white;
-@message-success__background: @color-blue3;
-@message-success-icon__color-inner: @color-white;
-
-@message-info__color: @color-white;
-@message-info__background: @color-sky-blue1;
-@message-info-icon__color-inner: @color-white;
-
-@message-notice__color: @message-info__color;
-@message-notice__background: @message-info__background;
-@message-notice-icon__color-inner: @message-info-icon__color-inner;
-
-@message-warning__background: @color-light-red;
-
-@message-error__background: @message-warning__background;
-
-.message.error {
-    font-weight: bold;
-}

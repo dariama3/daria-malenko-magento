@@ -8,6 +8,9 @@ use Magento\Framework\Controller\Result\Redirect;
 class RedirectResponseDemo implements
     \Magento\Framework\App\Action\HttpGetActionInterface
 {
+    /**
+     * @var \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory
+     */
     private \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory;
 
     /**

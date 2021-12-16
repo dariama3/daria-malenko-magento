@@ -24,7 +24,9 @@ $viewModel = $block->getData('view_model');
                  * 2. $regularCustomerRequest->getProductName() - to be implemented in the future
                  */
                 ?>
-                <span><?= $escaper->escapeHtml(__('Requested product:') . ' n/a'/*$regularCustomerRequest->getProductName()*/) ?></span>
+                <span>
+                    <?= $escaper->escapeHtml(__('Requested product:') . ' n/a'/*$regularCustomerRequest->getProductName()*/) ?>
+                </span>
             <?php endif; ?>
         </li>
     <?php endforeach; ?>

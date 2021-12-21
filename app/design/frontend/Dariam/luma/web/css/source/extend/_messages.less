@@ -1,3 +1,5 @@
+@color-light-red: #ffcccb;
+
 @message-success__color: @color-white;
 @message-success__background: @color-blue3;
 @message-success-icon__color-inner: @color-white;
@@ -19,7 +21,9 @@
 @message-notice-link__color-hover: inherit;
 @message-notice-link__color-active: inherit;
 
+@message-warning__color: @color-red11;
 @message-warning__background: @color-light-red;
+@message-warning-icon__color-inner: @color-red11;
 @message-warning-link__color: inherit;
 @message-warning-link__color-hover: inherit;
 @message-warning-link__color-active: inherit;
@@ -29,12 +33,15 @@
 @message-error-link__color-hover: inherit;
 @message-error-link__color-active: inherit;
 
-.message {
-    &.error {
-        font-weight: bold;
-    }
+& when (@media-common = true) {
+    .message {
+        &.notice,
+        &.error {
+            font-weight: bold;
+        }
 
-    a {
-        text-decoration: underline;
+        a {
+            text-decoration: underline;
+        }
     }
 }

@@ -44,7 +44,7 @@ deployment:
         - command: >
             sed -i "s/'MAGE_MODE' => 'production',/'MAGE_MODE' => 'default',/g" app/etc/env.php
           executor: shell
-        - command: 'install'
+        - command: 'install --no-dev'
           executor: composer
         - command: 'git checkout .gitignore pub/.htaccess'
           executor: shell

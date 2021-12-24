@@ -1,0 +1,25 @@
+@header-panel__background-color: @color-blue3;
+@navigation__background: @color-sky-blue1;
+@navigation-level0-item__color: @color-white;
+@navigation-level0-item__hover__color: @color-white;
+@navigation-level0-item__active__color: @color-white;
+@navigation-desktop-level0-item__color: @color-white;
+@navigation-desktop-level0-item__hover__color: @color-white;
+@submenu-item__color: @color-white;
+@submenu-desktop-item__color: @color-gray34;
+@submenu-desktop-item__hover__color: @color-gray34;
+
+& when (@media-common = true) {
+    .nav-sections-item-switch {
+        color: @color-white;
+
+        &:hover,
+        &:visited {
+            color: @color-white;
+        }
+    }
+
+    .nav-sections .header.links li.greet.welcome {
+        color: @color-white;
+    }
+}

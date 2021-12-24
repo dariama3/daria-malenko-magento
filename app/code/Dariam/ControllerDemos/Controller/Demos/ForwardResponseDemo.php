@@ -8,6 +8,9 @@ use Magento\Framework\Controller\Result\Forward;
 class ForwardResponseDemo implements
     \Magento\Framework\App\Action\HttpGetActionInterface
 {
+    /**
+     * @var \Magento\Framework\Controller\Result\ForwardFactory $forwardFactory
+     */
     private \Magento\Framework\Controller\Result\ForwardFactory $forwardFactory;
 
     /**

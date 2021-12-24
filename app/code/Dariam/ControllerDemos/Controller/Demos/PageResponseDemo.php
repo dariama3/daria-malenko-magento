@@ -7,6 +7,9 @@ use Magento\Framework\View\Result\Page;
 
 class PageResponseDemo implements \Magento\Framework\App\Action\HttpGetActionInterface
 {
+    /**
+     * @var \Magento\Framework\View\Result\PageFactory $pageFactory
+     */
     private \Magento\Framework\View\Result\PageFactory $pageFactory;
 
     /**

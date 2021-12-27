@@ -6,13 +6,13 @@
  */
 ?>
 <div class="dariam-regular-customer-request">
-    <form class="form"
-          id="dariam-regular-customer-form"
+    <form class="form dariam-regular-customer-form"
           action="/errors/404.php"
           onsubmit="return false;"
           method="POST"
           data-mage-init='{"Dariam_RegularCustomer_form":{
-              "action": "<?= $escaper->escapeHtmlAttr($block->getData('request_submit_url')) ?>"
+              "action": "<?= $escaper->escapeHtmlAttr($block->getData('request_submit_url')) ?>",
+              "isModal": <?= $block->getData('form_is_modal') ? 'true' : 'false' ?>
           }}'
     >
         <fieldset class="fieldset">

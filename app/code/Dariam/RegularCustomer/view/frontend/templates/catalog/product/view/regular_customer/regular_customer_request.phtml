@@ -8,8 +8,12 @@
 <div class="dariam-regular-customer-request">
     <form class="form"
           id="dariam-regular-customer-form"
-          action="<?= $escaper->escapeHtmlAttr($block->getData('request_submit_url')) ?>"
-          method="post"
+          action="/errors/404.php"
+          onsubmit="return false;"
+          method="POST"
+          data-mage-init='{"Dariam_RegularCustomer_form":{
+              "action": "<?= $escaper->escapeHtmlAttr($block->getData('request_submit_url')) ?>"
+          }}'
     >
         <fieldset class="fieldset">
             <legend class="legend">
@@ -26,6 +30,7 @@
                            title="<?= $escaper->escapeHtmlAttr(__('Firstname')) ?>"
                            class="input-text"
                            type="text"
+                           data-validate="{required:true}"
                     />
                 </div>
             </div>
@@ -38,6 +43,7 @@
                            title="<?= $escaper->escapeHtmlAttr(__('Email')) ?>"
                            class="input-text"
                            type="email"
+                           data-validate="{required:true, 'validate-email':true}"
                     />
                 </div>
             </div>

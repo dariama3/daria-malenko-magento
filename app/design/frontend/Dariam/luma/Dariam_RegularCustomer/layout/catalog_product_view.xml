@@ -4,6 +4,7 @@
 >
     <body>
         <move element="dariam.regular.customer.request.container" destination="dariam-regular-customer-tab"/>
+        <move element="dariam.regular.customer.message" destination="dariam.regular.customer.form.extras"/>
 
         <referenceBlock name="dariam.regular.customer.request">
             <arguments>

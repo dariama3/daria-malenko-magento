@@ -4,28 +4,36 @@
 >
     <body>
         <referenceContainer name="product.info.main">
-            <block class="Dariam\RegularCustomer\Block\Product\View\RegularCustomerRequest"
-                   name="dariam.regular.customer.request"
-                   template="Dariam_RegularCustomer::catalog/product/view/regular_customer/regular_customer_request.phtml"
-                   before="product.info.details"
-            >
-                <arguments>
-                    <argument name="cache_lifetime" xsi:type="number">84600</argument>
-                    <argument name="request_submit_url"
-                              path="regular-customer/index/request"
-                              xsi:type="url"
-                    />
-                    <argument name="product"
-                              helper="Magento\Catalog\Helper\Data::getProduct"
-                              xsi:type="helper"
-                    />
-                </arguments>
+            <container name="dariam.regular.customer.request.container">
                 <block class="Magento\Cms\Block\Block" name="dariam.regular.customer.message">
                     <arguments>
                         <argument name="block_id" xsi:type="string">regular_customer_request_message</argument>
                     </arguments>
                 </block>
-            </block>
+                <block class="Dariam\RegularCustomer\Block\Product\View\RegularCustomerRequest"
+                       name="dariam.regular.customer.request"
+                       template="Dariam_RegularCustomer::catalog/product/view/regular_customer/regular_customer_request.phtml"
+                       before="product.info.details"
+                >
+                    <arguments>
+                        <argument name="cache_lifetime" xsi:type="number">84600</argument>
+                        <argument name="request_submit_url"
+                                  path="regular-customer/index/request"
+                                  xsi:type="url"
+                        />
+                        <argument name="form_is_modal" xsi:type="boolean">true</argument>
+                        <argument name="product"
+                                  helper="Magento\Catalog\Helper\Data::getProduct"
+                                  xsi:type="helper"
+                        />
+                    </arguments>
+                    <container name="dariam.regular.customer.form.extras"/>
+                </block>
+                <block class="Magento\Framework\View\Element\Template"
+                       name="dariam.regular.customer.form.open.button"
+                       template="Dariam_RegularCustomer::catalog/product/view/regular_customer/form_open_button.phtml"
+                />
+            </container>
         </referenceContainer>
     </body>
 </page>

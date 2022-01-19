@@ -6,21 +6,16 @@ namespace Dariam\RegularCustomer\Controller\Index;
 use Dariam\RegularCustomer\Model\RegularCustomerRequest;
 use Magento\Framework\App\Request\InvalidRequestException;
 use Magento\Framework\App\RequestInterface;
-use Magento\Framework\Controller\Result\Redirect;
+use Magento\Framework\Controller\Result\Json;
 
 class Request implements
     \Magento\Framework\App\Action\HttpPostActionInterface,
     \Magento\Framework\App\CsrfAwareActionInterface
 {
     /**
-     * @var \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory
+     * @var \Magento\Framework\Controller\Result\JsonFactory $jsonFactory
      */
-    private \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory;
-
-    /**
-     * @var \Magento\Framework\Message\ManagerInterface $messageManager
-     */
-    private \Magento\Framework\Message\ManagerInterface $messageManager;
+    private \Magento\Framework\Controller\Result\JsonFactory $jsonFactory;
 
     /**
      * @var \Dariam\RegularCustomer\Model\RegularCustomerRequestFactory $regularCustomerRequestFactory
@@ -53,8 +48,7 @@ class Request implements
     private \Psr\Log\LoggerInterface $logger;
 
     /**
-     * @param \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory
-     * @param \Magento\Framework\Message\ManagerInterface $messageManager
+     * @param \Magento\Framework\Controller\Result\JsonFactory $jsonFactory
      * @param \Dariam\RegularCustomer\Model\RegularCustomerRequestFactory $regularCustomerRequestFactory
      * @param \Dariam\RegularCustomer\Model\ResourceModel\RegularCustomerRequest $regularCustomerRequestResource
      * @param \Magento\Framework\App\RequestInterface $request
@@ -63,8 +57,7 @@ class Request implements
      * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
-        \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory,
-        \Magento\Framework\Message\ManagerInterface $messageManager,
+        \Magento\Framework\Controller\Result\JsonFactory $jsonFactory,
         \Dariam\RegularCustomer\Model\RegularCustomerRequestFactory $regularCustomerRequestFactory,
         \Dariam\RegularCustomer\Model\ResourceModel\RegularCustomerRequest $regularCustomerRequestResource,
         \Magento\Framework\App\RequestInterface $request,
@@ -72,8 +65,7 @@ class Request implements
         \Magento\Framework\Data\Form\FormKey\Validator $formKeyValidator,
         \Psr\Log\LoggerInterface $logger
     ) {
-        $this->redirectFactory = $redirectFactory;
-        $this->messageManager = $messageManager;
+        $this->jsonFactory = $jsonFactory;
         $this->regularCustomerRequestFactory = $regularCustomerRequestFactory;
         $this->regularCustomerRequestResource = $regularCustomerRequestResource;
         $this->request = $request;
@@ -85,9 +77,9 @@ class Request implements
     /**
      * Controller action
      *
-     * @return Redirect
+     * @return Json
      */
-    public function execute(): Redirect
+    public function execute(): Json
     {
         /** @var RegularCustomerRequest $regularCustomerRequest */
         $regularCustomerRequest = $this->regularCustomerRequestFactory->create();
@@ -102,18 +94,16 @@ class Request implements
             }
 
             $this->regularCustomerRequestResource->save($regularCustomerRequest);
-            $this->messageManager->addSuccessMessage(__('You request is accepted for review!'));
+            $message = __('You request is accepted for review!');
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
-            $this->messageManager->addErrorMessage(
-                __("Your request can't be sent. Please, contact us if you see this message.")
-            );
+            $message = __("Your request can't be sent. Please, contact us if you see this message.");
         }
 
-        $redirect = $this->redirectFactory->create();
-        $redirect->setRefererUrl();
-
-        return $redirect;
+        return $this->jsonFactory->create()
+            ->setData([
+                'message' => $message
+            ]);
     }
 
     /**

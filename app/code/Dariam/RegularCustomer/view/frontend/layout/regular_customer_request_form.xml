@@ -16,11 +16,13 @@
                               xsi:type="url"
                     />
                 </arguments>
-                <block class="Magento\Cms\Block\Block" name="dariam.regular.customer.message">
-                    <arguments>
-                        <argument name="block_id" xsi:type="string">regular_customer_request_message</argument>
-                    </arguments>
-                </block>
+                <container name="dariam.regular.customer.form.extras">
+                    <block class="Magento\Cms\Block\Block" name="dariam.regular.customer.message">
+                        <arguments>
+                            <argument name="block_id" xsi:type="string">regular_customer_request_message</argument>
+                        </arguments>
+                    </block>
+                </container>
             </block>
         </referenceContainer>
     </body>

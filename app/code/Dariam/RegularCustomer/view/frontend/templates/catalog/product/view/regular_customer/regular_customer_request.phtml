@@ -6,16 +6,20 @@
  */
 ?>
 <div class="dariam-regular-customer-request">
-    <form class="form"
-          id="dariam-regular-customer-form"
-          action="<?= $escaper->escapeHtmlAttr($block->getData('request_submit_url')) ?>"
-          method="post"
+    <form class="form dariam-regular-customer-form"
+          action="/errors/404.php"
+          onsubmit="return false;"
+          method="POST"
+          data-mage-init='{"Dariam_RegularCustomer_form":{
+              "action": "<?= $escaper->escapeHtmlAttr($block->getData('request_submit_url')) ?>",
+              "isModal": <?= $block->getData('form_is_modal') ? 'true' : 'false' ?>
+          }}'
     >
         <fieldset class="fieldset">
             <legend class="legend">
                 <span><?= $escaper->escapeHtml(__('Loyalty program for Regular Customers')) ?></span>
             </legend>
-            <?= $block->getChildHtml('dariam.regular.customer.message') ?>
+            <?= $block->getChildHtml('dariam.regular.customer.form.extras') ?>
             <hr>
             <div class="field name required">
                 <label class="label" for="name">
@@ -26,6 +30,7 @@
                            title="<?= $escaper->escapeHtmlAttr(__('Firstname')) ?>"
                            class="input-text"
                            type="text"
+                           data-validate="{required:true}"
                     />
                 </div>
             </div>
@@ -38,6 +43,7 @@
                            title="<?= $escaper->escapeHtmlAttr(__('Email')) ?>"
                            class="input-text"
                            type="email"
+                           data-validate="{required:true, 'validate-email':true}"
                     />
                 </div>
             </div>

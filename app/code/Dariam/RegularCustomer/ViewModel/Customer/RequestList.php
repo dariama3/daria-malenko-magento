@@ -42,21 +42,29 @@ class RequestList implements \Magento\Framework\View\Element\Block\ArgumentInter
     private \Magento\Catalog\Model\Product\Visibility $productVisibility;
 
     /**
+     * @var \Magento\Customer\Model\Session $customerSession
+     */
+    private \Magento\Customer\Model\Session $customerSession;
+
+    /**
      * @param RegularCustomerRequestCollectionFactory $regularCustomerRequestCollectionFactory
      * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Catalog\Model\Product\Visibility $productVisibility
+     * @param \Magento\Customer\Model\Session $customerSession
      */
     public function __construct(
         RegularCustomerRequestCollectionFactory $regularCustomerRequestCollectionFactory,
         \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Catalog\Model\Product\Visibility $productVisibility
+        \Magento\Catalog\Model\Product\Visibility $productVisibility,
+        \Magento\Customer\Model\Session $customerSession
     ) {
         $this->regularCustomerRequestCollectionFactory = $regularCustomerRequestCollectionFactory;
         $this->storeManager = $storeManager;
         $this->productCollectionFactory = $productCollectionFactory;
         $this->productVisibility = $productVisibility;
+        $this->customerSession = $customerSession;
     }
 
     /**
@@ -75,8 +83,7 @@ class RequestList implements \Magento\Framework\View\Element\Block\ArgumentInter
 
         /** @var RegularCustomerRequestCollection $collection */
         $collection = $this->regularCustomerRequestCollectionFactory->create();
-        // @TODO: get current customer's ID
-        // $collection->addFieldToFilter('customer_id', 2);
+        $collection->addFieldToFilter('customer_id', $this->customerSession->getCustomerId());
         // @TODO: check if accounts are shared per website or not
         $collection->addFieldToFilter('store_id', ['in' => $website->getStoreIds()]);
         $this->loadedRegularCustomerRequestCollection = $collection;

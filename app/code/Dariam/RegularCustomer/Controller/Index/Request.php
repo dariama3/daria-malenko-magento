@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Dariam\RegularCustomer\Controller\Index;
 
 use Dariam\RegularCustomer\Model\RegularCustomerRequest;
+use Magento\Catalog\Model\ResourceModel\Product\Collection as ProductCollection;
 use Magento\Framework\App\Request\InvalidRequestException;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\Result\Json;
@@ -43,6 +44,16 @@ class Request implements
     private \Magento\Framework\Data\Form\FormKey\Validator $formKeyValidator;
 
     /**
+     * @var \Magento\Customer\Model\Session $customerSession
+     */
+    private \Magento\Customer\Model\Session $customerSession;
+
+    /**
+     * @var \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
+     */
+    private \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory;
+
+    /**
      * @var \Psr\Log\LoggerInterface $logger
      */
     private \Psr\Log\LoggerInterface $logger;
@@ -54,6 +65,8 @@ class Request implements
      * @param \Magento\Framework\App\RequestInterface $request
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Framework\Data\Form\FormKey\Validator $formKeyValidator
+     * @param \Magento\Customer\Model\Session $customerSession
+     * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
      * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
@@ -63,6 +76,8 @@ class Request implements
         \Magento\Framework\App\RequestInterface $request,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Framework\Data\Form\FormKey\Validator $formKeyValidator,
+        \Magento\Customer\Model\Session $customerSession,
+        \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
         \Psr\Log\LoggerInterface $logger
     ) {
         $this->jsonFactory = $jsonFactory;
@@ -72,6 +87,8 @@ class Request implements
         $this->storeManager = $storeManager;
         $this->formKeyValidator = $formKeyValidator;
         $this->logger = $logger;
+        $this->productCollectionFactory = $productCollectionFactory;
+        $this->customerSession = $customerSession;
     }
 
     /**
@@ -85,15 +102,46 @@ class Request implements
         $regularCustomerRequest = $this->regularCustomerRequestFactory->create();
 
         try {
-            $regularCustomerRequest->setName($this->request->getParam('name'))
-                ->setEmail($this->request->getParam('email'))
-                ->setStoreId($this->storeManager->getStore()->getId());
+            $customerId = $this->customerSession->getCustomerId()
+                ? (int) $this->customerSession->getCustomerId()
+                : null;
 
-            if ($this->request->getParam('product_id')) {
-                $regularCustomerRequest->setProductId((int) $this->request->getParam('product_id'));
+            if ($this->customerSession->isLoggedIn()) {
+                $name = $this->customerSession->getCustomer()->getName();
+                $email = $this->customerSession->getCustomer()->getEmail();
+            } else {
+                $name = $this->request->getParam('name');
+                $email = $this->request->getParam('email');
             }
 
+            $productId = (int) $this->request->getParam('product_id');
+            /** @var ProductCollection $productCollection */
+            $productCollection = $this->productCollectionFactory->create();
+            $productCollection->addIdFilter($productId)
+                ->setPageSize(1);
+            $product = $productCollection->getFirstItem();
+            $productId = (int) $product->getId();
+
+            if (!$productId) {
+                throw new \InvalidArgumentException("Product with id $productId does not exist");
+            }
+
+            $regularCustomerRequest->setName($name)
+                ->setCustomerId($customerId)
+                ->setEmail($email)
+                ->setProductId($productId)
+                ->setStoreId($this->storeManager->getStore()->getId());
+
             $this->regularCustomerRequestResource->save($regularCustomerRequest);
+
+            if (!$this->customerSession->isLoggedIn()) {
+                $this->customerSession->setRegularCustomerName($this->request->getParam('name'));
+                $this->customerSession->setRegularCustomerEmail($this->request->getParam('email'));
+                $productIds = $this->customerSession->getRegularCustomerProductIds() ?? [];
+                $productIds[] = $productId;
+                $this->customerSession->setRegularCustomerProductIds(array_unique($productIds));
+            }
+
             $message = __('You request is accepted for review!');
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());

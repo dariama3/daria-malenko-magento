@@ -3,68 +3,35 @@ declare(strict_types=1);
 
 namespace Dariam\RegularCustomer\ViewModel\Customer;
 
-use Dariam\RegularCustomer\Model\ResourceModel\RegularCustomerRequest\CollectionFactory as RegularCustomerRequestCollectionFactory;
+use Dariam\RegularCustomer\Model\DataProvider\DiscountRequestsProvider;
 use Dariam\RegularCustomer\Model\ResourceModel\RegularCustomerRequest\Collection as RegularCustomerRequestCollection;
 use Magento\Catalog\Model\ResourceModel\Product\Collection as ProductCollection;
 use Magento\Catalog\Model\Product;
-use Magento\Store\Model\Website;
 
 class RequestList implements \Magento\Framework\View\Element\Block\ArgumentInterface
 {
-    /**
-     * @var RegularCustomerRequestCollectionFactory $regularCustomerRequestCollectionFactory
-     */
-    private RegularCustomerRequestCollectionFactory $regularCustomerRequestCollectionFactory;
-
-    /**
-     * @var \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
-     */
     private \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory;
 
-    /**
-     * @var \Magento\Store\Model\StoreManagerInterface $storeManager
-     */
-    private \Magento\Store\Model\StoreManagerInterface $storeManager;
-
-    /**
-     * @var RegularCustomerRequestCollection $loadedRegularCustomerRequestCollection
-     */
-    private RegularCustomerRequestCollection $loadedRegularCustomerRequestCollection;
-
-    /**
-     * @var ProductCollection $loadedProductCollection
-     */
-    private ProductCollection $loadedProductCollection;
-
-    /**
-     * @var \Magento\Catalog\Model\Product\Visibility $productVisibility
-     */
     private \Magento\Catalog\Model\Product\Visibility $productVisibility;
 
-    /**
-     * @var \Magento\Customer\Model\Session $customerSession
-     */
     private \Magento\Customer\Model\Session $customerSession;
 
-    /**
-     * @param RegularCustomerRequestCollectionFactory $regularCustomerRequestCollectionFactory
-     * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Magento\Catalog\Model\Product\Visibility $productVisibility
-     * @param \Magento\Customer\Model\Session $customerSession
-     */
+    private DiscountRequestsProvider $discountRequestsProvider;
+
+    private RegularCustomerRequestCollection $loadedRegularCustomerRequestCollection;
+
+    private ProductCollection $loadedProductCollection;
+
     public function __construct(
-        RegularCustomerRequestCollectionFactory $regularCustomerRequestCollectionFactory,
         \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Catalog\Model\Product\Visibility $productVisibility,
-        \Magento\Customer\Model\Session $customerSession
+        \Magento\Customer\Model\Session $customerSession,
+        DiscountRequestsProvider $discountRequestsProvider
     ) {
-        $this->regularCustomerRequestCollectionFactory = $regularCustomerRequestCollectionFactory;
-        $this->storeManager = $storeManager;
         $this->productCollectionFactory = $productCollectionFactory;
         $this->productVisibility = $productVisibility;
         $this->customerSession = $customerSession;
+        $this->discountRequestsProvider = $discountRequestsProvider;
     }
 
     /**
@@ -74,19 +41,11 @@ class RequestList implements \Magento\Framework\View\Element\Block\ArgumentInter
      */
     public function getRegularCustomerRequestCollection(): RegularCustomerRequestCollection
     {
-        if (isset($this->loadedRegularCustomerRequestCollection)) {
-            return $this->loadedRegularCustomerRequestCollection;
+        if (!isset($this->loadedRegularCustomerRequestCollection)) {
+            $customerId = $this->customerSession->getCustomerId();
+
+            $this->loadedRegularCustomerRequestCollection = $this->discountRequestsProvider->getCurrentCustomerDiscountRequests($customerId);
         }
-
-        /** @var Website $website */
-        $website = $this->storeManager->getWebsite();
-
-        /** @var RegularCustomerRequestCollection $collection */
-        $collection = $this->regularCustomerRequestCollectionFactory->create();
-        $collection->addFieldToFilter('customer_id', $this->customerSession->getCustomerId());
-        // @TODO: check if accounts are shared per website or not
-        $collection->addFieldToFilter('store_id', ['in' => $website->getStoreIds()]);
-        $this->loadedRegularCustomerRequestCollection = $collection;
 
         return $this->loadedRegularCustomerRequestCollection;
     }

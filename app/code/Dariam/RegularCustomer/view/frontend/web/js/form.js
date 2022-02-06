@@ -10,6 +10,7 @@ define([
     $.widget('Dariam.regularCustomer_form', {
         options: {
             action: '',
+            checkUrl: '',
             isModal: false
         },
 
@@ -26,6 +27,8 @@ define([
 
                 $(document).on('dariam_regular_customer_form_open', this.openModal.bind(this));
             }
+
+            this.checkProduct();
         },
 
         /**
@@ -87,6 +90,8 @@ define([
                         title: $.mage.__('Posting your request...'),
                         content: response.message
                     });
+
+                    this.showAlreadyRequested();
                 },
 
                 /** @inheritdoc */
@@ -106,6 +111,25 @@ define([
                     $('body').trigger('processStop');
                 }
             });
+        },
+
+        checkProduct: function () {
+            if (!this.options.checkUrl) return;
+
+            const formData = new FormData($(this.element).get(0));
+            const productId = formData.get('product_id');
+
+            fetch(this.options.checkUrl)
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.products.some((id) => String(id) === String(productId))) {
+                        this.showAlreadyRequested();
+                    }
+                })
+        },
+
+        showAlreadyRequested: function () {
+            $(this.element).replaceWith('<span>Already Requested!</span>');
         }
     });
 

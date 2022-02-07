@@ -113,6 +113,9 @@ define([
             });
         },
 
+        /**
+         * @property {array} data.products
+         */
         checkProduct: function () {
             if (!this.options.checkUrl) return;
 
@@ -122,7 +125,7 @@ define([
             fetch(this.options.checkUrl)
                 .then((response) => response.json())
                 .then((data) => {
-                    if (data.products.some((id) => String(id) === String(productId))) {
+                    if (data.products.includes(Number(productId))) {
                         this.showAlreadyRequested();
                     }
                 })

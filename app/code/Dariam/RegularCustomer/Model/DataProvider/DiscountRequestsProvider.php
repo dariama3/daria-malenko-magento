@@ -15,6 +15,11 @@ class DiscountRequestsProvider
 
     private RegularCustomerRequestCollection $currentCustomerDiscountRequests;
 
+    /**
+     * DiscountRequestsProvider constructor.
+     * @param RegularCustomerRequestCollectionFactory $regularCustomerRequestCollectionFactory
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     */
     public function __construct(
         RegularCustomerRequestCollectionFactory $regularCustomerRequestCollectionFactory,
         \Magento\Store\Model\StoreManagerInterface $storeManager

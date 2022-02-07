@@ -16,6 +16,13 @@ class Products implements \Magento\Framework\App\Action\HttpGetActionInterface
 
     private \Psr\Log\LoggerInterface $logger;
 
+    /**
+     * Products constructor.
+     * @param \Magento\Framework\Controller\Result\JsonFactory $jsonFactory
+     * @param \Magento\Customer\Model\Session $customerSession
+     * @param DiscountRequestsProvider $discountRequestsProvider
+     * @param \Psr\Log\LoggerInterface $logger
+     */
     public function __construct(
         \Magento\Framework\Controller\Result\JsonFactory $jsonFactory,
         \Magento\Customer\Model\Session $customerSession,
@@ -51,7 +58,7 @@ class Products implements \Magento\Framework\App\Action\HttpGetActionInterface
 
         return $this->jsonFactory->create()
             ->setData([
-                'products' => $products
+                'products' => \array_map('intval', $products)
             ]);
     }
 }

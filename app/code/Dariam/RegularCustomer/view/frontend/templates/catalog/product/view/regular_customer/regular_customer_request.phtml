@@ -12,6 +12,7 @@
           method="POST"
           data-mage-init='{"Dariam_RegularCustomer_form":{
               "action": "<?= $escaper->escapeHtmlAttr($block->getData('request_submit_url')) ?>",
+              "checkUrl": "<?= $escaper->escapeHtmlAttr($block->getData('request_check_url')) ?>",
               "isModal": <?= $block->getData('form_is_modal') ? 'true' : 'false' ?>
           }}'
     >
@@ -21,6 +22,7 @@
             </legend>
             <?= $block->getChildHtml('dariam.regular.customer.form.extras') ?>
             <hr>
+            <?php // @TODO: Get current customer name and email for logged in customers ?>
             <div class="field name required">
                 <label class="label" for="name">
                     <span><?= $escaper->escapeHtml(__('Firstname')) ?></span>

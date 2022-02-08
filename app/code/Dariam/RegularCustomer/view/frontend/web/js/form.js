@@ -33,26 +33,39 @@ define([
                 $(document).on('dariam_regular_customer_form_open', this.openModal.bind(this));
             }
 
-            customerData.get('regular-customer').subscribe((data) => {
-                const nameField = $('input[name="name"]', this.element);
-                const emailField = $('input[name="email"]', this.element);
-                const productField = $('input[name="product_id"]', this.element);
-                const productId = Number(productField.val());
+            this.updateFormState(customerData.get('regular-customer')());
+            customerData.get('regular-customer').subscribe(this.updateFormState.bind(this));
+        },
 
-                if (data.productIds.includes(productId)) {
-                    return this.showAlreadyRequested();
-                }
-                if (data.productIds.name) {
-                    nameField.val(data.productIds.name);
-                }
-                if (data.productIds.email) {
-                    emailField.val(data.productIds.email);
-                }
-                if (data.productIds.isLoggedIn) {
-                    nameField.parent('field').hide();
-                    emailField.parent('field').hide();
-                }
-            });
+        /**
+         * Pre-fill form fields with data, hide fields if needed.
+         */
+        updateFormState: function (personalInfo) {
+            const nameField = $('input[name="name"]', this.element);
+            const emailField = $('input[name="email"]', this.element);
+            const productField = $('input[name="product_id"]', this.element);
+            const productId = Number(productField.val());
+
+            if (personalInfo.productIds.includes(productId)) {
+                return this.showAlreadyRequested();
+            }
+            if (personalInfo.name) {
+                nameField.val(data.name);
+            }
+            if (personalInfo.email) {
+                emailField.val(data.email);
+            }
+            if (personalInfo.isLoggedIn) {
+                nameField.parent('field').hide();
+                emailField.parent('field').hide();
+            }
+        },
+
+        /**
+         * Hide form and show already-requested message.
+         */
+        showAlreadyRequested: function () {
+            $(this.element).addClass('form--hidden');
         },
 
         /**
@@ -135,10 +148,6 @@ define([
                     $('body').trigger('processStop');
                 }
             });
-        },
-
-        showAlreadyRequested: function () {
-            $(this.element).replaceWith('<span>Already Requested!</span>');
         }
     });
 

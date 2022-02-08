@@ -44,7 +44,7 @@ class RequestList implements \Magento\Framework\View\Element\Block\ArgumentInter
         if (!isset($this->loadedRegularCustomerRequestCollection)) {
             $customerId = $this->customerSession->getCustomerId();
 
-            $this->loadedRegularCustomerRequestCollection = $this->discountRequestsProvider->getCustomerDiscountRequests($customerId);
+            $this->loadedRegularCustomerRequestCollection = $this->discountRequestsProvider->getCustomerDiscountRequests((int)$customerId);
         }
 
         return $this->loadedRegularCustomerRequestCollection;

@@ -75,7 +75,7 @@ define([
                     buttons: []
                 });
 
-                $(document).on('dv_campus_personal_discount_form_open', this.openModal.bind(this));
+                $(document).on('dariam_regular_customer_form_open', this.openModal.bind(this));
             }
         },
 

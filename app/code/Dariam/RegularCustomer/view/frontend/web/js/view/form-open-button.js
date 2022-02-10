@@ -1,16 +1,12 @@
 define([
     'jquery',
-    'jquery/ui'
-], function ($) {
+    'uiComponent',
+], function ($, Component) {
     'use strict';
 
-    $.widget('Dariam.regularCustomer_formOpenButton', {
-        /**
-         * Constructor
-         * @private
-         */
-        _create: function () {
-            $(this.element).click(this.openRequestForm.bind(this));
+    return Component.extend({
+        defaults: {
+            template: 'Dariam_RegularCustomer/form-open-button'
         },
 
         /**
@@ -20,6 +16,4 @@ define([
             $(document).trigger('dariam_regular_customer_form_open');
         }
     });
-
-    return $.Dariam.regularCustomer_formOpenButton;
 });

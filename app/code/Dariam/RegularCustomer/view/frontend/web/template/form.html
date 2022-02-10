@@ -1,0 +1,66 @@
+<form class="form"
+      action="/errors/404.php"
+      onsubmit="return false;"
+      method="POST"
+      data-bind="
+          submit: sendRequest,
+          afterRender: initModal,
+          visible: !alreadyRequested()
+      "
+>
+    <fieldset class="fieldset">
+        <legend class="legend">
+            <span translate="'Loyalty program for Regular Customers'"></span>
+        </legend>
+        <div class="field name required" data-bind="visible: !isLoggedIn()">
+            <label class="label" for="dariam-regular-customer-name">
+                <span translate="'Firstname'"></span>
+            </label>
+            <div class="control">
+                <input class="input-text"
+                       data-bind="
+                            value: customerName,
+                            attr: {
+                                title: $t('Firstname'),
+                                placeholder: $t('Firstname'),
+                            }
+                       "
+                       data-validate="{ required: true }"
+                       id="dariam-regular-customer-name"
+                       name="name"
+                       type="text"
+                />
+            </div>
+        </div>
+        <div class="field email required" data-bind="visible: !isLoggedIn()">
+            <label class="label" for="dariam-regular-customer-email">
+                <span translate="'Email'"></span>
+            </label>
+            <div class="control">
+                <input class="input-text"
+                       data-bind="
+                            value: customerEmail,
+                            attr: {
+                                title: $t('Email'),
+                                placeholder: $t('Email'),
+                            }
+                       "
+                       data-validate="{ required: true, 'validate-email': true }"
+                       id="dariam-regular-customer-email"
+                       name="email"
+                       type="email"
+                />
+            </div>
+        </div>
+    </fieldset>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button class="action submit primary" type="submit">
+                <span translate="'Send request'"></span>
+            </button>
+        </div>
+    </div>
+</form>
+<div class="message-info info message" data-bind="visible: alreadyRequested()">
+    <div translate="'Discount request for this product has already been sent'"></div>
+</div>

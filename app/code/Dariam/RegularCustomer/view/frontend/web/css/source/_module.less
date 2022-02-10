@@ -1,25 +1,10 @@
 & when (@media-common = true) {
-    .dariam-regular-customer-request form .fieldset > .legend {
+    .dariam-regular-customer-form .legend {
         font-size: @h3__font-size;
         margin-top: @heading__margin-top__base;
     }
 
     .modal-content .dariam-regular-customer-form {
         padding-bottom: @indent__base;
-    }
-
-    .already-requested {
-        display: none;
-    }
-
-    .dariam-regular-customer-form.form--hidden {
-        .fieldset,
-        .actions-toolbar {
-            display: none;
-        }
-
-        .already-requested {
-            display: inline-block;
-        }
     }
 }

@@ -12,7 +12,7 @@
                 </block>
                 <block class="Dariam\RegularCustomer\Block\Product\View\RegularCustomerRequest"
                        name="dariam.regular.customer.request"
-                       template="Dariam_RegularCustomer::catalog/product/view/regular_customer/regular_customer_request.phtml"
+                       template="Dariam_RegularCustomer::catalog/product/view/regular_customer/form.phtml"
                        before="product.info.details"
                 >
                     <arguments>

@@ -3,11 +3,11 @@ define([
     'ko',
     'uiComponent',
     'Magento_Customer/js/customer-data',
-    'Magento_Ui/js/modal/alert',
+    'Dariam_RegularCustomer_submitFormAction',
     'Magento_Ui/js/modal/modal',
     'mage/translate',
     'mage/cookies'
-], function ($, ko, Component, customerData, alert) {
+], function ($, ko, Component, customerData, submitFormAction) {
     'use strict';
 
     return Component.extend({
@@ -45,6 +45,7 @@ define([
 
         /**
          * Pre-fill form fields with data, hide fields if needed.
+         * @param {Object} personalInfo
          */
         updateFormState: function (personalInfo) {
             if (personalInfo.productIds && personalInfo.productIds.includes(this.productId)) {
@@ -115,51 +116,12 @@ define([
                 isAjax: 1,
             };
 
-            $.ajax({
-                url: this.action,
-                data: payload,
-                processData: false,
-                contentType: false,
-                type: 'post',
-                dataType: 'json',
-                context: this,
-
-                /** @inheritdoc */
-                beforeSend: function () {
-                    $('body').trigger('processStart');
-                },
-
-                /**
-                 * Success means that response from the server was received, but not that the request was saved!
-                 *
-                 * @param {Object} response
-                 */
-                success: function (response) {
-                    alert({
-                        title: $.mage.__('Posting your request...'),
-                        content: response.message
-                    });
-
-                    this.showAlreadyRequested();
-                },
-
-                /** @inheritdoc */
-                error: function () {
-                    alert({
-                        title: $.mage.__('Error'),
-                        content: $.mage.__("Your request can't be sent. Please, contact us if you see this message.")
-                    });
-                },
-
-                /** @inheritdoc */
-                complete: function () {
+            submitFormAction(this.action, payload)
+                .done(() => {
                     if (this.isModal) {
-                        $(this.$modal).modal('closeModal');
+                        this.$modal.modal('closeModal')
                     }
-
-                    $('body').trigger('processStop');
-                }
-            });
+                });
         }
     });
 });

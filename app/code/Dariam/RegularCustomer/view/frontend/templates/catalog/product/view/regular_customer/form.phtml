@@ -5,7 +5,7 @@
  * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
  */
 ?>
-<div class="form dariam-regular-customer-form" data-bind="scope: 'regularCustomerRequestForm'">
+<div class="form dariam-regular-customer-form-wrapper" data-bind="scope: 'regularCustomerRequest'">
     <?= $block->getChildHtml('dariam.regular.customer.form.extras') ?>
     <hr>
     <!-- ko template: getTemplate() --><!-- /ko -->
@@ -14,16 +14,7 @@
 <script type="text/x-magento-init">
     {
         "*": {
-            "Magento_Ui/js/core/app": {
-                "components": {
-                    "regularCustomerRequestForm": {
-                        "component": "Dariam_RegularCustomer_form",
-                        "action": "<?= $block->getData('request_submit_url') ?>",
-                        "productId": <?= (int) $block->getProduct()->getId() ?>,
-                        "isModal": <?= $block->getData('form_is_modal') ? 'true' : 'false' ?>
-                    }
-                }
-            }
+            "Magento_Ui/js/core/app": <?= /* @noEscape */ $block->getJsLayout() ?>
         }
     }
 </script>

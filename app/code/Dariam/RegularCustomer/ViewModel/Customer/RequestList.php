@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Dariam\RegularCustomer\ViewModel\Customer;
 
-use Dariam\RegularCustomer\Model\DataProvider\DiscountRequestsProvider;
+use Dariam\RegularCustomer\Model\DataProvider\RegularCustomersProvider;
 use Dariam\RegularCustomer\Model\ResourceModel\RegularCustomerRequest\Collection as RegularCustomerRequestCollection;
 use Magento\Catalog\Model\ResourceModel\Product\Collection as ProductCollection;
 use Magento\Catalog\Model\Product;
@@ -16,7 +16,7 @@ class RequestList implements \Magento\Framework\View\Element\Block\ArgumentInter
 
     private \Magento\Customer\Model\Session $customerSession;
 
-    private DiscountRequestsProvider $discountRequestsProvider;
+    private RegularCustomersProvider $discountRequestsProvider;
 
     private RegularCustomerRequestCollection $loadedRegularCustomerRequestCollection;
 
@@ -26,7 +26,7 @@ class RequestList implements \Magento\Framework\View\Element\Block\ArgumentInter
         \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
         \Magento\Catalog\Model\Product\Visibility $productVisibility,
         \Magento\Customer\Model\Session $customerSession,
-        DiscountRequestsProvider $discountRequestsProvider
+        RegularCustomersProvider $discountRequestsProvider
     ) {
         $this->productCollectionFactory = $productCollectionFactory;
         $this->productVisibility = $productVisibility;
@@ -44,7 +44,7 @@ class RequestList implements \Magento\Framework\View\Element\Block\ArgumentInter
         if (!isset($this->loadedRegularCustomerRequestCollection)) {
             $customerId = $this->customerSession->getCustomerId();
 
-            $this->loadedRegularCustomerRequestCollection = $this->discountRequestsProvider->getCurrentCustomerDiscountRequests($customerId);
+            $this->loadedRegularCustomerRequestCollection = $this->discountRequestsProvider->getCustomerDiscountRequests((int)$customerId);
         }
 
         return $this->loadedRegularCustomerRequestCollection;

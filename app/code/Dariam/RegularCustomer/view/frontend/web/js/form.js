@@ -1,78 +1,88 @@
 define([
     'jquery',
+    'ko',
+    'uiComponent',
     'Magento_Customer/js/customer-data',
     'Magento_Ui/js/modal/alert',
     'Magento_Ui/js/modal/modal',
     'mage/translate',
     'mage/cookies'
-], function ($, customerData, alert) {
+], function ($, ko, Component, customerData, alert) {
     'use strict';
 
-    $.widget('Dariam.regularCustomer_form', {
-        options: {
-            action: '',
-            checkUrl: '',
-            isModal: false
+    return Component.extend({
+        defaults: {
+            action: null,
+            alreadyRequested: false,
+            customerName: '',
+            customerEmail: '',
+            isLoggedIn: false,
+            isModal: false,
+            productId: null,
+            template: 'Dariam_RegularCustomer/form'
         },
 
         /**
-         * @property {string} data.name
-         * @property {string} data.email
-         * @property {array} data.productIds
-         * @property {boolean} data.isLoggedIn
-         * @private
+         * Constructor
          */
-        _create: function () {
-            $(this.element).on('submit.dariam_regular_customer_form', this.sendRequest.bind(this));
-
-            if (this.options.isModal) {
-                $(this.element).modal({
-                    buttons: []
-                });
-
-                $(document).on('dariam_regular_customer_form_open', this.openModal.bind(this));
-            }
+        initialize: function () {
+            this._super()
 
             this.updateFormState(customerData.get('regular-customer')());
             customerData.get('regular-customer').subscribe(this.updateFormState.bind(this));
         },
 
         /**
-         * Pre-fill form fields with data, hide fields if needed.
+         * Initialize observables and subscribe to their change if needed
+         * @returns {*}
          */
-        updateFormState: function (personalInfo) {
-            const nameField = $('input[name="name"]', this.element);
-            const emailField = $('input[name="email"]', this.element);
-            const productField = $('input[name="product_id"]', this.element);
-            const productId = Number(productField.val());
+        initObservable: function () {
+            this._super();
+            this.observe(['alreadyRequested', 'customerName', 'customerEmail', 'isLoggedIn']);
 
-            if (personalInfo.productIds.includes(productId)) {
-                return this.showAlreadyRequested();
-            }
-            if (personalInfo.name) {
-                nameField.val(data.name);
-            }
-            if (personalInfo.email) {
-                emailField.val(data.email);
-            }
-            if (personalInfo.isLoggedIn) {
-                nameField.parent('field').hide();
-                emailField.parent('field').hide();
-            }
+            return this;
         },
 
         /**
-         * Hide form and show already-requested message.
+         * Pre-fill form fields with data, hide fields if needed.
          */
-        showAlreadyRequested: function () {
-            $(this.element).addClass('form--hidden');
+        updateFormState: function (personalInfo) {
+            if (personalInfo.productIds && personalInfo.productIds.includes(this.productId)) {
+                return this.alreadyRequested(true);
+            }
+
+            if (personalInfo.name) {
+                this.customerName(personalInfo.name);
+            }
+
+            if (personalInfo.email) {
+                this.customerEmail(personalInfo.email);
+            }
+
+            this.isLoggedIn(!!personalInfo.isLoggedIn);
+        },
+
+        /**
+         * Save current for element and initialize modal window
+         * @param {Node} element
+         */
+        initModal: function (element) {
+            this.$form = $(element);
+
+            if (this.isModal) {
+                this.$modal = this.$form.modal({
+                    buttons: []
+                });
+
+                $(document).on('dv_campus_personal_discount_form_open', this.openModal.bind(this));
+            }
         },
 
         /**
          * Open modal dialog
          */
         openModal: function () {
-            $(this.element).modal('openModal');
+            this.$modal.modal('openModal');
         },
 
         /**
@@ -90,22 +100,24 @@ define([
          * Validate request form
          */
         validateForm: function () {
-            return $(this.element).validation().valid();
+            return this.$form.validation().valid();
         },
 
         /**
          * Submit request via AJAX. Add form key to the post data.
          */
         ajaxSubmit: function () {
-            let formData = new FormData($(this.element).get(0));
-
-            // Form key is not appended when the form is in the tab. Must add it manually
-            formData.append('form_key', $.mage.cookies.get('form_key'));
-            formData.append('isAjax', 1);
+            let payload = {
+                name: this.customerName(),
+                email: this.customerEmail(),
+                product_id: this.productId,
+                form_key: $.mage.cookies.get('form_key'),
+                isAjax: 1,
+            };
 
             $.ajax({
-                url: this.options.action,
-                data: formData,
+                url: this.action,
+                data: payload,
                 processData: false,
                 contentType: false,
                 type: 'post',
@@ -120,7 +132,7 @@ define([
                 /**
                  * Success means that response from the server was received, but not that the request was saved!
                  *
-                 * @inheritdoc
+                 * @param {Object} response
                  */
                 success: function (response) {
                     alert({
@@ -141,8 +153,8 @@ define([
 
                 /** @inheritdoc */
                 complete: function () {
-                    if (this.options.isModal) {
-                        $(this.element).modal('closeModal');
+                    if (this.isModal) {
+                        $(this.$modal).modal('closeModal');
                     }
 
                     $('body').trigger('processStop');
@@ -150,6 +162,4 @@ define([
             });
         }
     });
-
-    return $.Dariam.regularCustomer_form;
 });

@@ -7,7 +7,7 @@ use Dariam\RegularCustomer\Model\ResourceModel\RegularCustomerRequest\Collection
 use Dariam\RegularCustomer\Model\ResourceModel\RegularCustomerRequest\Collection as RegularCustomerRequestCollection;
 use Magento\Store\Model\Website;
 
-class DiscountRequestsProvider
+class RegularCustomersProvider
 {
     private RegularCustomerRequestCollectionFactory $regularCustomerRequestCollectionFactory;
 
@@ -16,7 +16,7 @@ class DiscountRequestsProvider
     private RegularCustomerRequestCollection $currentCustomerDiscountRequests;
 
     /**
-     * DiscountRequestsProvider constructor.
+     * RegularCustomersProvider constructor.
      * @param RegularCustomerRequestCollectionFactory $regularCustomerRequestCollectionFactory
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      */
@@ -34,7 +34,7 @@ class DiscountRequestsProvider
      * @param int $customerId
      * @return RegularCustomerRequestCollection
      */
-    public function getCurrentCustomerDiscountRequests(int $customerId): RegularCustomerRequestCollection
+    public function getCustomerDiscountRequests(int $customerId): RegularCustomerRequestCollection
     {
         if (!isset($this->currentCustomerDiscountRequests)) {
             /** @var Website $website */

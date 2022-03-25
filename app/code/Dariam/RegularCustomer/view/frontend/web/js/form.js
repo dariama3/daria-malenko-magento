@@ -1,10 +1,11 @@
 define([
     'jquery',
+    'Magento_Customer/js/customer-data',
     'Magento_Ui/js/modal/alert',
     'Magento_Ui/js/modal/modal',
     'mage/translate',
     'mage/cookies'
-], function ($, alert) {
+], function ($, customerData, alert) {
     'use strict';
 
     $.widget('Dariam.regularCustomer_form', {
@@ -15,6 +16,10 @@ define([
         },
 
         /**
+         * @property {string} data.name
+         * @property {string} data.email
+         * @property {array} data.productIds
+         * @property {boolean} data.isLoggedIn
          * @private
          */
         _create: function () {
@@ -28,7 +33,39 @@ define([
                 $(document).on('dariam_regular_customer_form_open', this.openModal.bind(this));
             }
 
-            this.checkProduct();
+            this.updateFormState(customerData.get('regular-customer')());
+            customerData.get('regular-customer').subscribe(this.updateFormState.bind(this));
+        },
+
+        /**
+         * Pre-fill form fields with data, hide fields if needed.
+         */
+        updateFormState: function (personalInfo) {
+            const nameField = $('input[name="name"]', this.element);
+            const emailField = $('input[name="email"]', this.element);
+            const productField = $('input[name="product_id"]', this.element);
+            const productId = Number(productField.val());
+
+            if (personalInfo.productIds.includes(productId)) {
+                return this.showAlreadyRequested();
+            }
+            if (personalInfo.name) {
+                nameField.val(data.name);
+            }
+            if (personalInfo.email) {
+                emailField.val(data.email);
+            }
+            if (personalInfo.isLoggedIn) {
+                nameField.parent('field').hide();
+                emailField.parent('field').hide();
+            }
+        },
+
+        /**
+         * Hide form and show already-requested message.
+         */
+        showAlreadyRequested: function () {
+            $(this.element).addClass('form--hidden');
         },
 
         /**
@@ -111,28 +148,6 @@ define([
                     $('body').trigger('processStop');
                 }
             });
-        },
-
-        /**
-         * @property {array} data.products
-         */
-        checkProduct: function () {
-            if (!this.options.checkUrl) return;
-
-            const formData = new FormData($(this.element).get(0));
-            const productId = formData.get('product_id');
-
-            fetch(this.options.checkUrl)
-                .then((response) => response.json())
-                .then((data) => {
-                    if (data.products.includes(Number(productId))) {
-                        this.showAlreadyRequested();
-                    }
-                })
-        },
-
-        showAlreadyRequested: function () {
-            $(this.element).replaceWith('<span>Already Requested!</span>');
         }
     });
 

@@ -135,8 +135,8 @@ class Request implements
             $this->regularCustomerRequestResource->save($regularCustomerRequest);
 
             if (!$this->customerSession->isLoggedIn()) {
-                $this->customerSession->setRegularCustomerName($this->request->getParam('name'));
-                $this->customerSession->setRegularCustomerEmail($this->request->getParam('email'));
+                $this->customerSession->setRegularCustomerName($name);
+                $this->customerSession->setRegularCustomerEmail($email);
                 $productIds = $this->customerSession->getRegularCustomerProductIds() ?? [];
                 $productIds[] = $productId;
                 $this->customerSession->setRegularCustomerProductIds(array_unique($productIds));
